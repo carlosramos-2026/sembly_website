@@ -1,0 +1,2410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sembly – The Agentic Meeting Intelligence Platform</title>
+  <style>
+    /* ══════════════════════════════════════════
+       RESET & BASE
+    ══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Brand */
+      --bg:           #f9f8ff;
+      --surface:      #ffffff;
+      --border:       #e8e5f4;
+      --accent:       #6c47ff;
+      --accent-dark:  #4f2fe0;
+      --accent-soft:  #ede9ff;
+      --text-1:       #16103a;
+      --text-2:       #5b5580;
+      --text-3:       #9a94ba;
+      --green:        #12b981;
+      /* Pillars */
+      --sales:        #f97316;
+      --sales-soft:   #fff4ed;
+      --sales-border: rgba(249,115,22,.2);
+      --delivery:     #0891b2;
+      --delivery-soft:#ecfbff;
+      --delivery-border: rgba(8,145,178,.2);
+      --intel:        #6c47ff;
+      --intel-soft:   #ede9ff;
+      --intel-border: rgba(108,71,255,.2);
+      /* System */
+      --radius:    14px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 1px 3px rgba(108,71,255,.08), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md: 0 4px 24px rgba(108,71,255,.12), 0 2px 8px rgba(0,0,0,.06);
+      --shadow-lg: 0 12px 48px rgba(108,71,255,.16), 0 4px 16px rgba(0,0,0,.07);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ══════════════════════════════════════════
+       NAVIGATION
+    ══════════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      background: rgba(249,248,255,.9);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      height: 62px;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+    }
+
+    .nav-inner {
+      max-width: 1160px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      flex-shrink: 0;
+      margin-right: 32px;
+    }
+
+    .nav-logo-mark {
+      width: 30px; height: 30px;
+      background: linear-gradient(135deg, var(--accent) 0%, #7c3aed 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      box-shadow: 0 2px 8px rgba(108,71,255,.35);
+    }
+
+    .nav-logo-text {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-1);
+      letter-spacing: -0.4px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      list-style: none;
+    }
+
+    .nav-links > li > a {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 13px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .nav-links > li > a:hover { color: var(--text-1); background: var(--accent-soft); }
+
+
+    .nav-spacer { flex: 1; }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-ghost {
+      padding: 7px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .btn-ghost:hover { color: var(--text-1); background: var(--accent-soft); }
+
+    .btn-primary {
+      padding: 8px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(108,71,255,.3);
+    }
+
+    /* ══════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -240px; left: 50%;
+      transform: translateX(-50%);
+      width: 1000px; height: 800px;
+      background: radial-gradient(ellipse at center,
+        rgba(108,71,255,.09) 0%,
+        rgba(249,115,22,.04) 40%,
+        transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 5px 14px 5px 10px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-2);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .6; transform: scale(1.4); }
+    }
+
+    .hero-headline {
+      font-size: clamp(36px, 5.5vw, 66px);
+      font-weight: 800;
+      letter-spacing: -2.5px;
+      line-height: 1.06;
+      max-width: 820px;
+      margin-bottom: 18px;
+      color: var(--text-1);
+    }
+
+    .hero-headline em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent) 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--text-2);
+      max-width: 500px;
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    /* ── Three pillar chips in hero ── */
+    .hero-pillars {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .pillar-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1.5px solid;
+      cursor: pointer;
+      transition: all .18s;
+      background: var(--surface);
+    }
+
+    .pillar-chip-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    .pillar-chip.sales  { color: var(--sales);    border-color: var(--sales-border);    }
+    .pillar-chip.sales:hover  { background: var(--sales-soft); border-color: var(--sales); }
+    .pillar-chip.delivery { color: var(--delivery); border-color: var(--delivery-border); }
+    .pillar-chip.delivery:hover { background: var(--delivery-soft); border-color: var(--delivery); }
+    .pillar-chip.intel  { color: var(--intel);    border-color: var(--intel-border);    }
+    .pillar-chip.intel:hover  { background: var(--intel-soft); border-color: var(--intel); }
+
+    .pillar-chip-dot.sales    { background: var(--sales); }
+    .pillar-chip-dot.delivery { background: var(--delivery); }
+    .pillar-chip-dot.intel    { background: var(--intel); }
+
+    .pillar-divider {
+      width: 1px; height: 16px;
+      background: var(--border);
+    }
+
+    /* ── Prompt box ── */
+    .prompt-container {
+      width: 100%;
+      max-width: 700px;
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    /* Tab row above prompt */
+    .prompt-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px 12px 0 0;
+      padding: 6px 8px 0;
+      border-bottom: none;
+    }
+
+    .prompt-tab {
+      padding: 6px 14px;
+      border-radius: 8px 8px 0 0;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-3);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      transition: all .15s;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+    }
+
+    .prompt-tab:hover { color: var(--text-2); }
+
+    .prompt-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .prompt-tab.active.tab-sales    { color: var(--sales);    border-bottom-color: var(--sales); }
+    .prompt-tab.active.tab-delivery { color: var(--delivery); border-bottom-color: var(--delivery); }
+    .prompt-tab.active.tab-intel    { color: var(--intel);    border-bottom-color: var(--intel); }
+
+    .prompt-box {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 0 0 18px 18px;
+      box-shadow: var(--shadow-md);
+      padding: 16px 20px 14px;
+      transition: border-color .2s, box-shadow .2s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .prompt-box:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(108,71,255,.08), var(--shadow-md);
+    }
+
+    .prompt-input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 15.5px;
+      color: var(--text-1);
+      resize: none;
+      min-height: 52px;
+      font-family: inherit;
+      line-height: 1.55;
+    }
+
+    .prompt-input::placeholder { color: var(--text-3); }
+
+    .prompt-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .prompt-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 4px 11px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(108,71,255,.15);
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .chip:hover { background: var(--accent); color: #fff; }
+    .chip.chip-sales    { background: var(--sales-soft);    color: var(--sales);    border-color: var(--sales-border); }
+    .chip.chip-sales:hover    { background: var(--sales);    color: #fff; }
+    .chip.chip-delivery { background: var(--delivery-soft); color: var(--delivery); border-color: var(--delivery-border); }
+    .chip.chip-delivery:hover { background: var(--delivery); color: #fff; }
+    .chip.chip-intel    { background: var(--intel-soft);    color: var(--intel);    border-color: var(--intel-border); }
+    .chip.chip-intel:hover    { background: var(--intel);    color: #fff; }
+
+    .prompt-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .prompt-attach {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px; height: 34px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      color: var(--text-3);
+      font-size: 16px;
+      transition: all .15s;
+    }
+
+    .prompt-attach:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+
+    .prompt-submit {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      transition: all .15s;
+    }
+
+    .prompt-submit:hover {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(108,71,255,.35);
+    }
+
+    .prompt-submit svg { width: 13px; height: 13px; }
+
+    /* Demo output */
+    .demo-output {
+      display: none;
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--accent);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 20px;
+      margin-top: 10px;
+      text-align: left;
+      animation: fadeUp .3s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .demo-output.visible { display: block; }
+
+    .demo-output-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .demo-pillar-tag {
+      padding: 2px 8px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: auto;
+    }
+
+    .demo-pillar-tag.sales    { background: var(--sales-soft);    color: var(--sales); }
+    .demo-pillar-tag.delivery { background: var(--delivery-soft); color: var(--delivery); }
+    .demo-pillar-tag.intel    { background: var(--intel-soft);    color: var(--intel); }
+
+    .demo-output-content p {
+      font-size: 13.5px;
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .demo-output-content strong { color: var(--text-1); }
+
+    .demo-item-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .demo-item-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13.5px;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
+
+    .demo-item-list li::before {
+      content: '✓';
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(18,185,129,.14);
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Suggestions row */
+    .prompt-suggestions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 700px;
+    }
+
+    .suggestion {
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 12.5px;
+      font-weight: 500;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-2);
+      cursor: pointer;
+      transition: all .15s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .suggestion:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+      transform: translateY(-1px);
+    }
+
+    .hero-cta-note {
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--text-3);
+    }
+
+    /* ══════════════════════════════════════════
+       LOGOS BAR
+    ══════════════════════════════════════════ */
+    .logos-bar {
+      padding: 40px 24px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .logos-bar p {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      margin-bottom: 20px;
+    }
+
+    .logos-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      max-width: 840px;
+      margin: 0 auto;
+    }
+
+    .logo-pill {
+      padding: 6px 18px;
+      border-radius: 100px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-3);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ══════════════════════════════════════════
+       SHARED SECTION STYLES
+    ══════════════════════════════════════════ */
+    .section {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 12px;
+    }
+
+    .section-label.sales    { color: var(--sales); }
+    .section-label.delivery { color: var(--delivery); }
+    .section-label.intel    { color: var(--intel); }
+    .section-label.default  { color: var(--accent); }
+
+    .section-heading {
+      font-size: clamp(26px, 3.5vw, 42px);
+      font-weight: 800;
+      letter-spacing: -1.3px;
+      line-height: 1.1;
+      max-width: 620px;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 16px;
+      color: var(--text-2);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    /* ══════════════════════════════════════════
+       THREE PILLARS OVERVIEW
+    ══════════════════════════════════════════ */
+    .pillars-intro {
+      text-align: center;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 80px 24px 48px;
+    }
+
+    .pillars-intro .section-label { justify-content: center; }
+    .pillars-intro .section-heading { max-width: 100%; font-size: clamp(28px, 3.5vw, 44px); }
+    .pillars-intro .section-sub { max-width: 560px; margin: 0 auto; }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    @media (max-width: 860px) { .pillars-grid { grid-template-columns: 1fr; } }
+
+    .pillar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: all .22s;
+    }
+
+    .pillar-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .pillar-card.sales::before    { background: linear-gradient(90deg, var(--sales), #fb923c); }
+    .pillar-card.delivery::before { background: linear-gradient(90deg, var(--delivery), #38bdf8); }
+    .pillar-card.intel::before    { background: linear-gradient(90deg, var(--intel), #a78bfa); }
+
+    .pillar-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .pillar-card.sales:hover    { border-color: var(--sales-border); }
+    .pillar-card.delivery:hover { border-color: var(--delivery-border); }
+    .pillar-card.intel:hover    { border-color: var(--intel-border); }
+
+    .pillar-icon-wrap {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .pillar-card.sales .pillar-icon-wrap    { background: var(--sales-soft); }
+    .pillar-card.delivery .pillar-icon-wrap { background: var(--delivery-soft); }
+    .pillar-card.intel .pillar-icon-wrap    { background: var(--intel-soft); }
+
+    .pillar-card-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 8px;
+    }
+
+    .pillar-card.sales .pillar-card-label    { color: var(--sales); }
+    .pillar-card.delivery .pillar-card-label { color: var(--delivery); }
+    .pillar-card.intel .pillar-card-label    { color: var(--intel); }
+
+    .pillar-card-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+      color: var(--text-1);
+      margin-bottom: 10px;
+    }
+
+    .pillar-card-desc {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    .pillar-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 24px;
+    }
+
+    .pillar-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13.5px;
+      color: var(--text-2);
+      line-height: 1.4;
+    }
+
+    .pillar-check {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .pillar-card.sales    .pillar-check { background: var(--sales-soft);    color: var(--sales); }
+    .pillar-card.delivery .pillar-check { background: var(--delivery-soft); color: var(--delivery); }
+    .pillar-card.intel    .pillar-check { background: var(--intel-soft);    color: var(--intel); }
+
+    .pillar-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13.5px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: gap .15s;
+    }
+
+    .pillar-card.sales    .pillar-link { color: var(--sales); }
+    .pillar-card.delivery .pillar-link { color: var(--delivery); }
+    .pillar-card.intel    .pillar-link { color: var(--intel); }
+    .pillar-link:hover { gap: 8px; }
+
+    /* ══════════════════════════════════════════
+       STATS
+    ══════════════════════════════════════════ */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 52px;
+    }
+
+    @media (max-width: 600px) { .stats-row { grid-template-columns: 1fr; } }
+
+    .stat-card {
+      text-align: center;
+      padding: 32px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .stat-num {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label { font-size: 14px; color: var(--text-2); font-weight: 500; }
+
+    /* ══════════════════════════════════════════
+       DEEP DIVE HIGHLIGHT ROWS
+    ══════════════════════════════════════════ */
+    .deep-dive {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .deep-dive-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+
+    .deep-dive-inner.reverse { direction: rtl; }
+    .deep-dive-inner.reverse > * { direction: ltr; }
+
+    @media (max-width: 860px) {
+      .deep-dive-inner,
+      .deep-dive-inner.reverse { grid-template-columns: 1fr; direction: ltr; gap: 40px; }
+    }
+
+    .deep-dive-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 11.5px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .deep-dive-badge.sales    { background: var(--sales-soft);    color: var(--sales);    border: 1px solid var(--sales-border); }
+    .deep-dive-badge.delivery { background: var(--delivery-soft); color: var(--delivery); border: 1px solid var(--delivery-border); }
+    .deep-dive-badge.intel    { background: var(--intel-soft);    color: var(--intel);    border: 1px solid var(--intel-border); }
+
+    .deep-dive-title {
+      font-size: clamp(24px, 3vw, 38px);
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .deep-dive-desc {
+      font-size: 15.5px;
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .deep-feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .deep-feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
+
+    .deep-feat-icon {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .sales .deep-feat-icon    { background: var(--sales-soft);    color: var(--sales); }
+    .delivery .deep-feat-icon { background: var(--delivery-soft); color: var(--delivery); }
+    .intel .deep-feat-icon    { background: var(--intel-soft);    color: var(--intel); }
+
+    .deep-feature-list li strong { color: var(--text-1); display: block; font-size: 13.5px; }
+
+    .btn-pillar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 22px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .15s;
+    }
+
+    .btn-pillar.sales    { background: var(--sales); }
+    .btn-pillar.sales:hover    { background: #ea6c0a; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(249,115,22,.35); }
+    .btn-pillar.delivery { background: var(--delivery); }
+    .btn-pillar.delivery:hover { background: #0773a0; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(8,145,178,.35); }
+    .btn-pillar.intel    { background: var(--intel); }
+    .btn-pillar.intel:hover    { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(108,71,255,.35); }
+
+    /* ── Mock UI panels ── */
+    .mock-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mock-topbar {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 11px 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ff6b6b; }
+    .dot-y { background: #ffd43b; }
+    .dot-g { background: #69db7c; }
+
+    .mock-topbar-title {
+      margin-left: 8px;
+      font-size: 12px;
+      color: var(--text-3);
+      font-weight: 500;
+    }
+
+    .mock-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Chat bubbles */
+    .mock-bubble {
+      background: var(--accent-soft);
+      border-radius: 12px 12px 12px 4px;
+      padding: 11px 15px;
+      font-size: 13px;
+      color: var(--text-1);
+      max-width: 82%;
+      line-height: 1.5;
+      border: 1px solid var(--intel-border);
+    }
+
+    .mock-bubble.right {
+      border-radius: 12px 12px 4px 12px;
+      background: var(--accent);
+      color: #fff;
+      align-self: flex-end;
+      border: none;
+      font-size: 12.5px;
+    }
+
+    /* Sentiment panel */
+    .mock-sentiment {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    .mock-sent-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+    }
+
+    .mock-sent-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 7px;
+    }
+
+    .mock-sent-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-1);
+      width: 90px;
+      flex-shrink: 0;
+    }
+
+    .mock-sent-bar-bg {
+      flex: 1;
+      height: 6px;
+      background: var(--border);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .mock-sent-bar { height: 100%; border-radius: 100px; }
+    .sent-positive { background: var(--green); }
+    .sent-neutral  { background: var(--text-3); }
+    .sent-risk     { background: #f97316; }
+
+    .mock-sent-pct {
+      font-size: 11px;
+      font-weight: 700;
+      width: 34px;
+      text-align: right;
+    }
+
+    .mock-risk-flag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff7ed;
+      border: 1px solid rgba(249,115,22,.25);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #9a3412;
+      margin-top: 4px;
+    }
+
+    /* Delivery mock */
+    .mock-milestone {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+    }
+
+    .mock-ms-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+
+    .mock-ms-row:last-child { border-bottom: none; }
+
+    .mock-ms-status {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .ms-done { background: var(--green); }
+    .ms-active { background: var(--delivery); }
+    .ms-pending { background: var(--border); }
+
+    .mock-ms-name { flex: 1; color: var(--text-1); font-weight: 500; }
+    .mock-ms-owner { color: var(--text-3); font-size: 11px; }
+    .mock-ms-due { color: var(--text-3); font-size: 11px; }
+
+    .mock-action-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+
+    .mock-ai-cb {
+      width: 14px; height: 14px;
+      border-radius: 4px;
+      background: var(--delivery);
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .mock-ai-text { font-size: 12px; color: var(--text-1); line-height: 1.4; }
+    .mock-ai-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+
+    /* Intelligence mock */
+    .mock-transcript {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 12px;
+    }
+
+    .mock-transcript-line {
+      display: flex;
+      gap: 8px;
+      padding: 4px 0;
+    }
+
+    .mock-speaker {
+      font-weight: 700;
+      color: var(--accent);
+      width: 60px;
+      flex-shrink: 0;
+      font-size: 11px;
+    }
+
+    .mock-line-text { color: var(--text-2); line-height: 1.4; }
+    .mock-line-text.highlight { color: var(--text-1); background: rgba(108,71,255,.08); border-radius: 4px; padding: 0 4px; }
+
+    .mock-decision-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--intel-soft);
+      border: 1px solid var(--intel-border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--intel);
+      margin-top: 6px;
+    }
+
+    .mock-topic-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      margin-bottom: 5px;
+    }
+
+    .mock-topic-name { width: 100px; color: var(--text-2); font-size: 11px; }
+    .mock-topic-track { flex: 1; height: 5px; background: var(--border); border-radius: 100px; overflow: hidden; }
+    .mock-topic-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--intel), #a78bfa); }
+
+    /* ══════════════════════════════════════════
+       TESTIMONIALS
+    ══════════════════════════════════════════ */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 860px) { .testimonials-grid { grid-template-columns: 1fr; } }
+
+    .testimonial-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .testimonial-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      width: fit-content;
+    }
+
+    .testimonial-tag.sales    { background: var(--sales-soft);    color: var(--sales); }
+    .testimonial-tag.delivery { background: var(--delivery-soft); color: var(--delivery); }
+    .testimonial-tag.intel    { background: var(--intel-soft);    color: var(--intel); }
+
+    .testimonial-stars { color: #f59e0b; font-size: 12.5px; margin-bottom: 10px; }
+
+    .testimonial-text {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+
+    .testimonial-author { display: flex; align-items: center; gap: 10px; }
+
+    .author-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .author-name  { font-size: 13px; font-weight: 700; color: var(--text-1); }
+    .author-role  { font-size: 12px; color: var(--text-3); }
+
+    /* ══════════════════════════════════════════
+       CTA SECTION
+    ══════════════════════════════════════════ */
+    .cta-wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .cta-section {
+      background: linear-gradient(135deg, #4f2fe0 0%, #6c47ff 50%, #7c3aed 100%);
+      border-radius: 24px;
+      padding: 72px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(255,255,255,.12) 0%, transparent 70%);
+    }
+
+    .cta-section::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -60px;
+      width: 360px; height: 360px;
+      background: radial-gradient(circle, rgba(249,115,22,.15) 0%, transparent 70%);
+    }
+
+    .cta-section h2 {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section p {
+      font-size: 17px;
+      color: rgba(255,255,255,.72);
+      margin-bottom: 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-white {
+      padding: 12px 28px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .15s;
+    }
+
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+
+    .btn-outline-white {
+      padding: 12px 28px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      background: rgba(255,255,255,.14);
+      border: 1.5px solid rgba(255,255,255,.38);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .15s;
+    }
+
+    .btn-outline-white:hover { background: rgba(255,255,255,.24); transform: translateY(-2px); }
+
+    /* ══════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 52px 24px 32px;
+    }
+
+    .footer-inner { max-width: 1160px; margin: 0 auto; }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2.2fr 1fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    @media (max-width: 900px) { .footer-top { grid-template-columns: 1fr 1fr; } }
+
+    .footer-brand p {
+      font-size: 13.5px;
+      color: var(--text-3);
+      line-height: 1.65;
+      margin-top: 12px;
+      max-width: 240px;
+    }
+
+    .footer-col h4 {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-1);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 16px;
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 13.5px;
+      color: var(--text-3);
+      text-decoration: none;
+      margin-bottom: 10px;
+      transition: color .12s;
+    }
+
+    .footer-col a:hover { color: var(--accent); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-bottom p { font-size: 12.5px; color: var(--text-3); }
+
+    .footer-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .badge-pill {
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(108,71,255,.15);
+    }
+
+    /* ══════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .prompt-tabs { overflow-x: auto; }
+    }
+
+    @media (max-width: 600px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .cta-section { padding: 48px 24px; }
+    }
+
+    /* Integration tags */
+    .tag-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .tag {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 100px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-2);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tag-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+
+    /* Highlight box inside deep-dive */
+    .deep-highlight-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-top: 6px;
+    }
+
+    .deep-highlight-box .metric {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .deep-highlight-box .metric-label {
+      font-size: 12.5px;
+      color: var(--text-2);
+    }
+
+    .deep-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-mark">S</div>
+      <span class="nav-logo-text">Sembly</span>
+    </a>
+
+    <ul class="nav-links">
+
+      <li><a href="#">How It Works</a></li>
+      <li><a href="#">Solutions</a></li>
+      <li><a href="#">Product</a></li>
+      <li><a href="#">Integrations</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Resources</a></li>
+
+    </ul>
+
+    <div class="nav-spacer"></div>
+
+    <div class="nav-actions">
+      <a href="#" class="btn-ghost">Log in</a>
+      <a href="#" class="btn-primary">Try Free →</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    Now with Agentic AI · 10,000+ teams trust Sembly
+  </div>
+
+  <h1 class="hero-headline">
+    From every meeting —<br><em>sales wins, project delivery,<br>and team intelligence</em>
+  </h1>
+
+  <p class="hero-sub">
+    Sembly is the agentic platform that turns conversations into proposals, project briefs, and organizational knowledge — automatically.
+  </p>
+
+  <!-- Pillar chips -->
+  <div class="hero-pillars">
+    <span class="pillar-chip sales" onclick="switchTab('sales')">
+      <span class="pillar-chip-dot sales"></span>Sales Enablement
+    </span>
+    <span class="pillar-divider"></span>
+    <span class="pillar-chip delivery" onclick="switchTab('delivery')">
+      <span class="pillar-chip-dot delivery"></span>Delivery Enablement
+    </span>
+    <span class="pillar-divider"></span>
+    <span class="pillar-chip intel" onclick="switchTab('intel')">
+      <span class="pillar-chip-dot intel"></span>Meeting Intelligence
+    </span>
+  </div>
+
+  <!-- Tabbed prompt -->
+  <div class="prompt-container">
+    <div class="prompt-tabs" id="promptTabs">
+      <button class="prompt-tab active" data-tab="all"      onclick="switchTab('all')">All</button>
+      <button class="prompt-tab tab-sales"    data-tab="sales"    onclick="switchTab('sales')">📈 Sales Enablement</button>
+      <button class="prompt-tab tab-delivery" data-tab="delivery" onclick="switchTab('delivery')">🚀 Delivery Enablement</button>
+      <button class="prompt-tab tab-intel"    data-tab="intel"    onclick="switchTab('intel')">🧠 Meeting Intelligence</button>
+    </div>
+
+    <div class="prompt-box" id="promptBox">
+      <textarea
+        class="prompt-input"
+        id="promptInput"
+        rows="2"
+        placeholder="Ask Sembly about your meetings, or paste a transcript to get started…"
+      ></textarea>
+      <div class="prompt-footer">
+        <div class="prompt-chips" id="promptChips">
+          <!-- Populated by JS -->
+        </div>
+        <div class="prompt-actions">
+          <button class="prompt-attach" title="Upload transcript or audio">📎</button>
+          <button class="prompt-submit" onclick="handlePrompt()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+            Ask Sembly
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo output -->
+    <div class="demo-output" id="demoOutput">
+      <div class="demo-output-header">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--accent)"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+        Sembly · <span id="demoTitle">Processing…</span>
+        <span class="demo-pillar-tag" id="demoPillarTag"></span>
+      </div>
+      <div class="demo-output-content" id="demoContent"></div>
+    </div>
+  </div>
+
+  <!-- Suggestion pills -->
+  <div class="prompt-suggestions" id="promptSuggestions">
+    <!-- Populated by JS -->
+  </div>
+
+  <p class="hero-cta-note">No credit card required · Works with Zoom, Teams, Google Meet &amp; Webex</p>
+</section>
+
+
+<!-- ════════════════════════════════════════════════
+     LOGOS BAR
+════════════════════════════════════════════════ -->
+<div class="logos-bar">
+  <p>Works seamlessly with your existing stack</p>
+  <div class="logos-row">
+    <span class="logo-pill">Salesforce</span>
+    <span class="logo-pill">HubSpot</span>
+    <span class="logo-pill">Notion</span>
+    <span class="logo-pill">Slack</span>
+    <span class="logo-pill">Zoom</span>
+    <span class="logo-pill">Microsoft Teams</span>
+    <span class="logo-pill">Google Meet</span>
+    <span class="logo-pill">Webex</span>
+    <span class="logo-pill">Asana</span>
+    <span class="logo-pill">Jira</span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+
+<!-- ════════════════════════════════════════════════
+     THREE PILLARS OVERVIEW
+════════════════════════════════════════════════ -->
+<div class="pillars-intro">
+  <div class="section-label default">✦ Three ways Sembly drives results</div>
+  <h2 class="section-heading">One platform, three transformative outcomes</h2>
+  <p class="section-sub">
+    Sembly is more than a meeting tool. It's an agentic intelligence layer built around the three outcomes that matter most to professional services businesses.
+  </p>
+</div>
+
+<div class="pillars-grid">
+
+  <!-- Sales Enablement -->
+  <div class="pillar-card sales">
+    <div class="pillar-icon-wrap">📈</div>
+    <div class="pillar-card-label">Sales Enablement</div>
+    <h3 class="pillar-card-title">Close more deals, faster</h3>
+    <p class="pillar-card-desc">
+      Sembly captures every buyer signal in your calls — sentiment, objections, next steps — and turns them into proposals and follow-ups before the meeting ends.
+    </p>
+    <ul class="pillar-features">
+      <li><span class="pillar-check">✓</span>Auto-generate sales proposals from discovery calls</li>
+      <li><span class="pillar-check">✓</span>Real-time buyer sentiment &amp; engagement scoring</li>
+      <li><span class="pillar-check">✓</span>Pipeline risk detection across all calls</li>
+      <li><span class="pillar-check">✓</span>CRM auto-sync — Salesforce, HubSpot &amp; more</li>
+      <li><span class="pillar-check">✓</span>Champion &amp; decision-maker identification</li>
+    </ul>
+    <a href="#sales" class="pillar-link">Explore Sales Enablement →</a>
+  </div>
+
+  <!-- Delivery Enablement -->
+  <div class="pillar-card delivery">
+    <div class="pillar-icon-wrap">🚀</div>
+    <div class="pillar-card-label">Delivery Enablement</div>
+    <h3 class="pillar-card-title">Deliver on every promise</h3>
+    <p class="pillar-card-desc">
+      From kickoff call to final report, Sembly ensures nothing slips through the cracks — automating project briefs, action item ownership, and client deliverables.
+    </p>
+    <ul class="pillar-features">
+      <li><span class="pillar-check">✓</span>Project briefs auto-generated from kickoff calls</li>
+      <li><span class="pillar-check">✓</span>Action items with owners, deadlines &amp; dependencies</li>
+      <li><span class="pillar-check">✓</span>Milestone &amp; commitment tracking across meetings</li>
+      <li><span class="pillar-check">✓</span>Scope creep and delivery risk alerts</li>
+      <li><span class="pillar-check">✓</span>Client-ready reports, gap analyses &amp; status updates</li>
+    </ul>
+    <a href="#delivery" class="pillar-link">Explore Delivery Enablement →</a>
+  </div>
+
+  <!-- Meeting Intelligence -->
+  <div class="pillar-card intel">
+    <div class="pillar-icon-wrap">🧠</div>
+    <div class="pillar-card-label">Meeting Intelligence</div>
+    <h3 class="pillar-card-title">Turn every call into an asset</h3>
+    <p class="pillar-card-desc">
+      Sembly builds a living knowledge base from every meeting — searchable, structured, and instantly queryable — so your team never loses a decision or insight.
+    </p>
+    <ul class="pillar-features">
+      <li><span class="pillar-check">✓</span>AI transcription in 48 languages</li>
+      <li><span class="pillar-check">✓</span>Decision, commitment &amp; risk capture</li>
+      <li><span class="pillar-check">✓</span>Conversation search across your full history</li>
+      <li><span class="pillar-check">✓</span>Topic trends &amp; workspace analytics</li>
+      <li><span class="pillar-check">✓</span>Custom AI agent &amp; template library</li>
+    </ul>
+    <a href="#intelligence" class="pillar-link">Explore Meeting Intelligence →</a>
+  </div>
+
+</div>
+
+<div class="divider"></div>
+
+
+<!-- ════════════════════════════════════════════════
+     STATS
+════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">2M+</div>
+      <div class="stat-label">Business interactions captured &amp; analyzed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">10K+</div>
+      <div class="stat-label">Professional teams worldwide</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">48</div>
+      <div class="stat-label">Languages supported</div>
+    </div>
+  </div>
+  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+    <span class="hero-badge" style="margin:0;">🏆 Gartner Emerging Visionary</span>
+    <span class="hero-badge" style="margin:0;">🔒 SOC 2 Type II Certified</span>
+    <span class="hero-badge" style="margin:0;">✅ Microsoft 365 Certified</span>
+    <span class="hero-badge" style="margin:0;">🇪🇺 GDPR Compliant</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ════════════════════════════════════════════════
+     DEEP DIVE 1 — SALES ENABLEMENT
+════════════════════════════════════════════════ -->
+<div class="deep-dive" id="sales">
+  <div class="deep-dive-inner">
+    <!-- Left: Copy -->
+    <div class="sales">
+      <div class="deep-dive-badge sales">📈 Sales Enablement</div>
+      <h2 class="deep-dive-title">Win deals with the intelligence hidden in every call</h2>
+      <p class="deep-dive-desc">
+        Sembly listens, analyzes, and acts on every sales conversation. From the moment a discovery call ends, your proposal is already drafted, your CRM is updated, and your pipeline risks are flagged.
+      </p>
+      <ul class="deep-feature-list">
+        <li>
+          <span class="deep-feat-icon">📄</span>
+          <div><strong>Auto-generated proposals &amp; pitch decks</strong>Sembly drafts a tailored proposal within minutes of your discovery call — ready to send or refine.</div>
+        </li>
+        <li>
+          <span class="deep-feat-icon">💡</span>
+          <div><strong>Buyer sentiment &amp; engagement scoring</strong>Understand how engaged each stakeholder is, track sentiment shifts across the conversation, and identify your champion.</div>
+        </li>
+        <li>
+          <span class="deep-feat-icon">⚠️</span>
+          <div><strong>Pipeline risk detection</strong>Sembly flags objections, pricing hesitations, and competitive mentions so your team can respond before a deal goes cold.</div>
+        </li>
+        <li>
+          <span class="deep-feat-icon">🔗</span>
+          <div><strong>CRM sync — Salesforce, HubSpot &amp; more</strong>Meeting notes, action items, and deal signals push directly to your CRM — zero manual data entry.</div>
+        </li>
+      </ul>
+      <div class="deep-metrics">
+        <div class="deep-highlight-box">
+          <div class="metric" style="color:var(--sales)">3.2×</div>
+          <div class="metric-label">faster proposal turnaround</div>
+        </div>
+        <div class="deep-highlight-box">
+          <div class="metric" style="color:var(--sales)">68%</div>
+          <div class="metric-label">reduction in post-call admin time</div>
+        </div>
+      </div>
+      <div style="margin-top:24px;">
+        <a href="#" class="btn-pillar sales">Start winning more deals →</a>
+      </div>
+    </div>
+    <!-- Right: Mock UI -->
+    <div class="mock-panel">
+      <div class="mock-topbar">
+        <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+        <span class="mock-topbar-title">Sembly · Sales Intelligence — Acme Corp Call</span>
+      </div>
+      <div class="mock-body">
+        <div class="mock-sentiment">
+          <div class="mock-sent-title">Buyer Sentiment Analysis</div>
+          <div class="mock-sent-row">
+            <span class="mock-sent-name">Sarah Chen</span>
+            <div class="mock-sent-bar-bg"><div class="mock-sent-bar sent-positive" style="width:87%"></div></div>
+            <span class="mock-sent-pct" style="color:var(--green)">87%</span>
+          </div>
+          <div class="mock-sent-row">
+            <span class="mock-sent-name">Tom Watkins</span>
+            <div class="mock-sent-bar-bg"><div class="mock-sent-bar sent-neutral" style="width:61%"></div></div>
+            <span class="mock-sent-pct" style="color:var(--text-3)">61%</span>
+          </div>
+          <div class="mock-sent-row">
+            <span class="mock-sent-name">Mark Liu</span>
+            <div class="mock-sent-bar-bg"><div class="mock-sent-bar sent-risk" style="width:42%"></div></div>
+            <span class="mock-sent-pct" style="color:var(--sales)">42%</span>
+          </div>
+          <div class="mock-risk-flag">⚠️ <strong>Pricing objection detected</strong>&nbsp;·&nbsp;Mark raised budget concern at 24:30</div>
+        </div>
+        <div class="mock-bubble">Can you draft a proposal for Acme Corp based on this call?</div>
+        <div class="mock-bubble right">✓ Proposal generated — tailored to their Salesforce stack &amp; $45K budget</div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;">
+          <div style="font-size:12px;font-weight:700;color:var(--text-1);margin-bottom:6px;">📄 Acme Corp — Solution Proposal</div>
+          <div style="height:5px;background:var(--border);border-radius:4px;margin-bottom:5px;width:88%"></div>
+          <div style="height:5px;background:var(--border);border-radius:4px;margin-bottom:5px;width:74%"></div>
+          <div style="height:5px;background:var(--border);border-radius:4px;margin-bottom:5px;width:82%"></div>
+          <div style="margin-top:8px;font-size:11px;color:var(--green);font-weight:600;">✓ Synced to Salesforce · Ready to export PDF / DOCX</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+
+<!-- ════════════════════════════════════════════════
+     DEEP DIVE 2 — DELIVERY ENABLEMENT
+════════════════════════════════════════════════ -->
+<div class="deep-dive" id="delivery">
+  <div class="deep-dive-inner reverse">
+    <!-- Left: Mock UI -->
+    <div class="mock-panel">
+      <div class="mock-topbar">
+        <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+        <span class="mock-topbar-title">Sembly · Project Delivery — Q3 Website Redesign</span>
+      </div>
+      <div class="mock-body">
+        <div class="mock-milestone">
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;padding:0 0 8px;border-bottom:1px solid var(--border);margin-bottom:4px;">Milestones &amp; Action Items</div>
+          <div class="mock-ms-row">
+            <span class="mock-ms-status ms-done"></span>
+            <span class="mock-ms-name">Project brief signed off</span>
+            <span class="mock-ms-owner">You</span>
+            <span class="mock-ms-due">✓ Done</span>
+          </div>
+          <div class="mock-ms-row">
+            <span class="mock-ms-status ms-done"></span>
+            <span class="mock-ms-name">Wireframes delivered</span>
+            <span class="mock-ms-owner">Design</span>
+            <span class="mock-ms-due">✓ Done</span>
+          </div>
+          <div class="mock-ms-row">
+            <span class="mock-ms-status ms-active"></span>
+            <span class="mock-ms-name">Client review session</span>
+            <span class="mock-ms-owner">You</span>
+            <span class="mock-ms-due" style="color:var(--delivery)">→ Today</span>
+          </div>
+          <div class="mock-ms-row">
+            <span class="mock-ms-status ms-pending"></span>
+            <span class="mock-ms-name">Dev handoff &amp; sprint plan</span>
+            <span class="mock-ms-owner">Dev Lead</span>
+            <span class="mock-ms-due">Fri Apr 25</span>
+          </div>
+        </div>
+        <div class="mock-action-item">
+          <span class="mock-ai-cb">✓</span>
+          <div>
+            <div class="mock-ai-text">Send revised scope doc to Acme legal team</div>
+            <div class="mock-ai-meta">Owner: You · Due: Thu · From: Apr 17 kickoff call</div>
+          </div>
+        </div>
+        <div class="mock-action-item">
+          <span class="mock-ai-cb">✓</span>
+          <div>
+            <div class="mock-ai-text">Schedule UAT session with Acme stakeholders</div>
+            <div class="mock-ai-meta">Owner: Sarah L. · Due: Wed · Synced to Asana</div>
+          </div>
+        </div>
+        <div class="mock-risk-flag">⚠️ <strong>Scope creep risk</strong>&nbsp;·&nbsp;3 new feature requests raised — not in SOW</div>
+      </div>
+    </div>
+    <!-- Right: Copy -->
+    <div class="delivery">
+      <div class="deep-dive-badge delivery">🚀 Delivery Enablement</div>
+      <h2 class="deep-dive-title">Keep every project on track, automatically</h2>
+      <p class="deep-dive-desc">
+        From the kickoff call to the final client report, Sembly ensures your delivery team never drops the ball. Every commitment is tracked, every risk surfaced, every document ready the moment it's needed.
+      </p>
+      <ul class="deep-feature-list">
+        <li>
+          <span class="deep-feat-icon">📋</span>
+          <div><strong>Kickoff-to-brief in seconds</strong>Sembly transforms your kickoff call into a complete, structured project brief — scope, timeline, stakeholders, and success metrics included.</div>
+        </li>
+        <li>
+          <span class="deep-feat-icon">✅</span>
+          <div><strong>Accountability layer for every meeting</strong>Every action item gets an owner, a deadline, and a source — automatically synced to Asana, Jira, Notion, or your PM tool of choice.</div>
+        </li>
+        <li>
+          <span class="deep-feat-icon">⚠️</span>
+          <div><strong>Scope creep &amp; delivery risk alerts</strong>Sembly detects when new requests, timeline concerns, or unresolved blockers emerge across meetings — before they become problems.</div>
+        </li>
+        <li>
+          <span class="deep-feat-icon">📊</span>
+          <div><strong>Client-ready status reports &amp; gap analyses</strong>Generate polished deliverables for client reviews — without spending hours writing them up after the meeting.</div>
+        </li>
+      </ul>
+      <div class="deep-metrics">
+        <div class="deep-highlight-box">
+          <div class="metric" style="color:var(--delivery)">4–5h</div>
+          <div class="metric-label">saved per team per week</div>
+        </div>
+        <div class="deep-highlight-box">
+          <div class="metric" style="color:var(--delivery)">0</div>
+          <div class="metric-label">action items lost between meetings</div>
+        </div>
+      </div>
+      <div style="margin-top:24px;">
+        <a href="#" class="btn-pillar delivery">Streamline your delivery →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+
+<!-- ════════════════════════════════════════════════
+     DEEP DIVE 3 — MEETING INTELLIGENCE
+════════════════════════════════════════════════ -->
+<div class="deep-dive" id="intelligence">
+  <div class="deep-dive-inner">
+    <!-- Left: Copy -->
+    <div class="intel">
+      <div class="deep-dive-badge intel">🧠 Meeting Intelligence</div>
+      <h2 class="deep-dive-title">Every conversation becomes a searchable, actionable asset</h2>
+      <p class="deep-dive-desc">
+        Sembly builds an intelligent memory layer from every meeting your team has — structured, searchable, and instantly available to anyone who needs it.
+      </p>
+      <ul class="deep-feature-list">
+        <li>
+          <span class="deep-feat-icon">🎙️</span>
+          <div><strong>AI transcription in 48 languages</strong>Accurate, speaker-attributed transcripts from Zoom, Teams, Meet, and Webex — automatically stored and organized.</div>
+        </li>
+        <li>
+          <span class="deep-feat-icon">🎯</span>
+          <div><strong>Decision, commitment &amp; risk capture</strong>Sembly identifies and tags key decisions, open commitments, and flagged risks — so nothing critical gets buried in a transcript.</div>
+        </li>
+        <li>
+          <span class="deep-feat-icon">🔍</span>
+          <div><strong>Cross-meeting conversation search</strong>Search by keyword, speaker, topic, or date across your entire meeting history. Find any insight from any call in seconds.</div>
+        </li>
+        <li>
+          <span class="deep-feat-icon">📈</span>
+          <div><strong>Workspace analytics &amp; topic trends</strong>See how your team's meetings are trending — talk time, engagement patterns, recurring themes, and meeting health scores.</div>
+        </li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag"><span class="tag-dot"></span>Real-time transcription</span>
+        <span class="tag"><span class="tag-dot"></span>48 languages</span>
+        <span class="tag"><span class="tag-dot"></span>Decision tagging</span>
+        <span class="tag"><span class="tag-dot"></span>Topic analytics</span>
+      </div>
+      <div style="margin-top:24px;">
+        <a href="#" class="btn-pillar intel">Unlock meeting intelligence →</a>
+      </div>
+    </div>
+    <!-- Right: Mock UI -->
+    <div class="mock-panel">
+      <div class="mock-topbar">
+        <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+        <span class="mock-topbar-title">Sembly · Meeting Intelligence — Apr 20, Q2 Planning</span>
+      </div>
+      <div class="mock-body">
+        <div class="mock-transcript">
+          <div class="mock-transcript-line">
+            <span class="mock-speaker">Jamie</span>
+            <span class="mock-line-text">We need to lock the budget before the end of this sprint.</span>
+          </div>
+          <div class="mock-transcript-line">
+            <span class="mock-speaker">Alex</span>
+            <span class="mock-line-text highlight">Agreed — let's set the cap at $120K and revisit in six weeks.</span>
+          </div>
+          <div class="mock-transcript-line">
+            <span class="mock-speaker">Sam</span>
+            <span class="mock-line-text">I'll update the finance doc and share it before Friday.</span>
+          </div>
+          <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="mock-decision-tag">🎯 Decision: Budget $120K</span>
+            <span class="mock-decision-tag">✅ Action: Sam → Finance doc, Fri</span>
+          </div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Topic Coverage · This Meeting</div>
+          <div class="mock-topic-bar">
+            <span class="mock-topic-name">Budget</span>
+            <div class="mock-topic-track"><div class="mock-topic-fill" style="width:82%"></div></div>
+            <span style="font-size:11px;color:var(--text-3);width:28px;text-align:right;">82%</span>
+          </div>
+          <div class="mock-topic-bar">
+            <span class="mock-topic-name">Timeline</span>
+            <div class="mock-topic-track"><div class="mock-topic-fill" style="width:65%"></div></div>
+            <span style="font-size:11px;color:var(--text-3);width:28px;text-align:right;">65%</span>
+          </div>
+          <div class="mock-topic-bar">
+            <span class="mock-topic-name">Resourcing</span>
+            <div class="mock-topic-track"><div class="mock-topic-fill" style="width:48%"></div></div>
+            <span style="font-size:11px;color:var(--text-3);width:28px;text-align:right;">48%</span>
+          </div>
+          <div class="mock-topic-bar">
+            <span class="mock-topic-name">Risks</span>
+            <div class="mock-topic-track"><div class="mock-topic-fill" style="width:31%"></div></div>
+            <span style="font-size:11px;color:var(--text-3);width:28px;text-align:right;">31%</span>
+          </div>
+        </div>
+        <div class="mock-bubble right" style="font-size:12px;">
+          🔍 Found 12 mentions of "budget cap" across 8 meetings this quarter
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+
+<!-- ════════════════════════════════════════════════
+     TESTIMONIALS
+════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-label default">✦ Customers</div>
+  <h2 class="section-heading">Loved by the teams that use it most</h2>
+  <p class="section-sub" style="margin-bottom:40px;">
+    From sales leaders to project managers to operations teams — Sembly pays for itself in the first week.
+  </p>
+
+  <div class="testimonials-grid">
+
+    <div class="testimonial-card">
+      <span class="testimonial-tag sales">📈 Sales Enablement</span>
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">
+        "I walk out of every discovery call with a draft proposal already waiting. Sembly cut our proposal turnaround from two days to 20 minutes. We've closed three deals we would have lost just from speed alone."
+      </p>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:var(--sales);">MR</div>
+        <div>
+          <div class="author-name">Marcus R.</div>
+          <div class="author-role">VP Sales, TechCo</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <span class="testimonial-tag delivery">🚀 Delivery Enablement</span>
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">
+        "Our PMO runs 12 concurrent projects. Sembly tracks every action item, every commitment, every risk — automatically. Nothing falls through the cracks. It's like having a chief of staff for every project."
+      </p>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:var(--delivery);">SL</div>
+        <div>
+          <div class="author-name">Sara L.</div>
+          <div class="author-role">Head of Delivery, Agency XYZ</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <span class="testimonial-tag intel">🧠 Meeting Intelligence</span>
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">
+        "We run a VC fund and Sembly automatically generates investment memos from partner calls. It's cut our documentation time by 70% and our entire deal history is now searchable. It's transformed how we operate."
+      </p>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:var(--intel);">DK</div>
+        <div>
+          <div class="author-name">David K.</div>
+          <div class="author-role">General Partner, Meridian Capital</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════
+     CTA
+════════════════════════════════════════════════ -->
+<div class="cta-wrap">
+  <div class="cta-section">
+    <h2>Ready to activate all three?</h2>
+    <p>Sales Enablement. Delivery Enablement. Meeting Intelligence.<br>One platform, one subscription, transformative results.</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn-white">Start for Free</a>
+      <a href="#" class="btn-outline-white">Book a Demo</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="display:inline-flex;">
+          <div class="nav-logo-mark">S</div>
+          <span class="nav-logo-text">Sembly</span>
+        </a>
+        <p>The agentic meeting intelligence platform for professional services and high-impact teams.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Sales Enablement</h4>
+        <a href="#">Proposal Generation</a>
+        <a href="#">Buyer Sentiment</a>
+        <a href="#">Pipeline Risk</a>
+        <a href="#">CRM Sync</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Delivery Enablement</h4>
+        <a href="#">Project Briefs</a>
+        <a href="#">Action Items</a>
+        <a href="#">Client Deliverables</a>
+        <a href="#">Risk Alerts</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Meeting Intelligence</h4>
+        <a href="#">Transcription</a>
+        <a href="#">Decision Capture</a>
+        <a href="#">Conversation Search</a>
+        <a href="#">Workspace Analytics</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About Us</a>
+        <a href="#">Blog</a>
+        <a href="#">Webinars</a>
+        <a href="#">Partners</a>
+        <a href="#">Help Center</a>
+        <a href="#">Trust Center</a>
+        <a href="#">Pricing</a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Sembly AI. All rights reserved.</p>
+      <div class="footer-badges">
+        <span class="badge-pill">SOC 2 Type II</span>
+        <span class="badge-pill">GDPR</span>
+        <span class="badge-pill">MS 365 Certified</span>
+      </div>
+      <div style="display:flex;gap:16px;">
+        <a href="#" style="font-size:12.5px;color:var(--text-3);text-decoration:none;">Privacy</a>
+        <a href="#" style="font-size:12.5px;color:var(--text-3);text-decoration:none;">Terms</a>
+        <a href="#" style="font-size:12.5px;color:var(--text-3);text-decoration:none;">Security</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════ -->
+<script>
+/* ── Tab data ── */
+const TABS = {
+  all: {
+    placeholder: 'Ask Sembly about your meetings, or paste a transcript to get started…',
+    chips: [
+      { label: '📋 Summarize call',     prompt: 'Summarize my last sales call',                     cls: '' },
+      { label: '📄 Project brief',      prompt: 'Create a project brief from today\'s kickoff meeting', cls: '' },
+      { label: '✅ Action items',        prompt: 'List all action items and owners from last week',   cls: '' },
+      { label: '✉️ Follow-up email',    prompt: 'Draft a follow-up email based on my last meeting',  cls: '' },
+    ],
+    suggestions: [
+      { label: '🚨 Identify meeting risks',     prompt: 'What risks were raised in my last client meeting?' },
+      { label: '📑 Generate sales proposal',    prompt: 'Generate a sales proposal from my discovery call' },
+      { label: '📈 Buyer sentiment analysis',   prompt: 'Show buyer sentiment from my last sales call' },
+      { label: '🧠 Extract key decisions',      prompt: 'Extract all key decisions from the Q2 planning session' },
+    ]
+  },
+  sales: {
+    placeholder: 'Ask about deals, proposals, buyer sentiment, pipeline risks…',
+    chips: [
+      { label: '📄 Draft proposal',        prompt: 'Generate a sales proposal from my last discovery call', cls: 'chip-sales' },
+      { label: '💡 Buyer sentiment',       prompt: 'Show buyer sentiment from my Acme Corp call',           cls: 'chip-sales' },
+      { label: '⚠️ Pipeline risks',        prompt: 'What pipeline risks were flagged in my calls this week?', cls: 'chip-sales' },
+      { label: '🎯 Champion ID',           prompt: 'Who is the champion and decision maker in my last deal call?', cls: 'chip-sales' },
+    ],
+    suggestions: [
+      { label: '📑 Sales proposal',        prompt: 'Generate a sales proposal from my discovery call' },
+      { label: '💬 Objection handling',    prompt: 'What objections came up in my last three sales calls?' },
+      { label: '🔗 Sync to Salesforce',    prompt: 'Sync action items and deal notes to Salesforce from today\'s call' },
+      { label: '📧 Follow-up email',       prompt: 'Write a follow-up email with next steps from my sales call' },
+    ]
+  },
+  delivery: {
+    placeholder: 'Ask about projects, action items, milestones, client deliverables…',
+    chips: [
+      { label: '📋 Project brief',         prompt: 'Create a project brief from today\'s kickoff meeting', cls: 'chip-delivery' },
+      { label: '✅ Action items',           prompt: 'List all open action items with owners and due dates',  cls: 'chip-delivery' },
+      { label: '📊 Status report',         prompt: 'Generate a client status report for this week',         cls: 'chip-delivery' },
+      { label: '⚠️ Scope risks',           prompt: 'What scope creep or delivery risks were raised this week?', cls: 'chip-delivery' },
+    ],
+    suggestions: [
+      { label: '📋 Kickoff brief',         prompt: 'Create a project brief from today\'s kickoff meeting' },
+      { label: '🗂️ Client status report', prompt: 'Generate a client-ready status report from last week\'s calls' },
+      { label: '⚠️ Risk summary',         prompt: 'Summarize all delivery risks and blockers from this sprint' },
+      { label: '🔗 Sync to Asana',        prompt: 'Push all action items to Asana from this week\'s calls' },
+    ]
+  },
+  intel: {
+    placeholder: 'Search across meetings, find decisions, analyze topics and trends…',
+    chips: [
+      { label: '🔍 Search meetings',       prompt: 'Search all calls where budget was discussed this quarter', cls: 'chip-intel' },
+      { label: '🎯 Key decisions',         prompt: 'Extract all key decisions from the last 30 days',         cls: 'chip-intel' },
+      { label: '📈 Topic trends',          prompt: 'What topics came up most often across my team calls this month?', cls: 'chip-intel' },
+      { label: '📊 Meeting health',        prompt: 'Show my team\'s meeting engagement and talk-time breakdown', cls: 'chip-intel' },
+    ],
+    suggestions: [
+      { label: '🧠 All key decisions',     prompt: 'Extract all key decisions from the last 30 days' },
+      { label: '📈 Topic trends',          prompt: 'What topics have been trending in my calls this month?' },
+      { label: '🔎 Find a moment',         prompt: 'Find every time pricing was discussed in the last quarter' },
+      { label: '📊 Workspace analytics',  prompt: 'Show workspace meeting health scores for my team' },
+    ]
+  }
+};
+
+/* ── Demo responses ── */
+const RESPONSES = {
+  proposal: {
+    title: 'Generated · Sales Proposal — Acme Corp',
+    pillar: 'Sales Enablement', pillarClass: 'sales',
+    html: `
+      <p><strong>Client:</strong> Acme Corp &nbsp;·&nbsp; <strong>Champion:</strong> Sarah Chen (VP Sales) &nbsp;·&nbsp; <strong>Budget:</strong> $45K/yr</p>
+      <ul class="demo-item-list">
+        <li>Tailored to their Salesforce stack and Q2 decision timeline</li>
+        <li>Addresses pricing objection raised by Mark Liu at 24:30</li>
+        <li>Includes ROI model based on stated pain points</li>
+        <li>Exec summary + technical section + next steps</li>
+      </ul>
+      <p style="margin-top:12px;font-size:12px;color:var(--green);font-weight:600;">✓ Synced to Salesforce · Export as PDF or DOCX · Share link ready</p>
+    `
+  },
+  sentiment: {
+    title: 'Buyer Sentiment · Acme Corp Call',
+    pillar: 'Sales Enablement', pillarClass: 'sales',
+    html: `
+      <p><strong>Overall deal sentiment:</strong> Positive (74%) · Decision timeline confirmed Q2</p>
+      <ul class="demo-item-list">
+        <li><strong>Sarah Chen</strong> — 87% positive, champion identified, budget authority confirmed</li>
+        <li><strong>Tom Watkins</strong> — 61% neutral, technical evaluator, needs deeper product demo</li>
+        <li><strong>Mark Liu</strong> — 42% concerned, pricing objection at 24:30 — recommend address in proposal</li>
+      </ul>
+      <p style="margin-top:12px;font-size:12px;color:var(--sales);font-weight:600;">⚠️ Recommendation: Address Mark's budget concern directly in proposal executive summary</p>
+    `
+  },
+  pipeline: {
+    title: 'Pipeline Risks · This Week',
+    pillar: 'Sales Enablement', pillarClass: 'sales',
+    html: `
+      <ul class="demo-item-list">
+        <li>Acme Corp — pricing objection unresolved (Mark Liu, Apr 20 call)</li>
+        <li>NovaTech — decision delayed, legal review added to process (flagged Apr 18)</li>
+        <li>Pinnacle Group — competitor mentioned twice: "We\'re also talking to Gong"</li>
+      </ul>
+      <p style="margin-top:12px;font-size:12px;color:var(--text-2);">3 deals at risk · Recommended actions synced to your CRM</p>
+    `
+  },
+  brief: {
+    title: 'Generated · Project Brief',
+    pillar: 'Delivery Enablement', pillarClass: 'delivery',
+    html: `
+      <p><strong>Project:</strong> Website Redesign — Acme Corp &nbsp;·&nbsp; <strong>Timeline:</strong> 8 weeks &nbsp;·&nbsp; <strong>Budget:</strong> $28,000</p>
+      <ul class="demo-item-list">
+        <li>Scope: 12 core pages, new design system, mobile-first responsive</li>
+        <li>Stakeholders: Marketing (lead), Dev Team, Legal (sign-off required)</li>
+        <li>Success metrics: 30% conversion improvement, sub-2s load time</li>
+        <li>First milestone: Wireframe sign-off by Week 2</li>
+      </ul>
+      <p style="margin-top:12px;font-size:12px;color:var(--green);font-weight:600;">✓ Exported to Notion · Action items synced to Asana · Shared with client</p>
+    `
+  },
+  actions: {
+    title: 'Open Action Items · Last 7 Days',
+    pillar: 'Delivery Enablement', pillarClass: 'delivery',
+    html: `
+      <ul class="demo-item-list">
+        <li><strong>You</strong> — Send revised scope doc to Acme legal <em style="color:var(--text-3)">(Due: Thu)</em></li>
+        <li><strong>Sarah L.</strong> — Schedule UAT session with Acme stakeholders <em style="color:var(--text-3)">(Due: Wed)</em></li>
+        <li><strong>Dev Lead</strong> — Finalize sprint plan &amp; send to PM <em style="color:var(--text-3)">(Due: Fri)</em></li>
+        <li><strong>You</strong> — Upload revised onboarding deck to client portal <em style="color:var(--text-3)">(Due: Mon)</em></li>
+      </ul>
+      <p style="margin-top:12px;font-size:12px;color:var(--green);font-weight:600;">✓ Synced to Asana · 1 item overdue flagged · 2 items due today</p>
+    `
+  },
+  decisions: {
+    title: 'Key Decisions · Last 30 Days',
+    pillar: 'Meeting Intelligence', pillarClass: 'intel',
+    html: `
+      <ul class="demo-item-list">
+        <li>Q2 budget cap set at $120K — Apr 20, Q2 Planning (Jamie &amp; Alex)</li>
+        <li>Website redesign approved — Apr 17 kickoff, 8-week timeline confirmed</li>
+        <li>New vendor for analytics tool selected — Apr 14, ops review</li>
+        <li>Remote-first policy extended through Q3 — Apr 10, leadership call</li>
+      </ul>
+      <p style="margin-top:12px;font-size:12px;color:var(--text-2);">24 decisions captured across 18 meetings this month · All timestamped &amp; searchable</p>
+    `
+  },
+  search: {
+    title: 'Conversation Search · "budget"',
+    pillar: 'Meeting Intelligence', pillarClass: 'intel',
+    html: `
+      <p><strong>12 mentions</strong> of "budget" across <strong>8 meetings</strong> this quarter</p>
+      <ul class="demo-item-list">
+        <li>Apr 20 — Q2 Planning: Budget cap agreed at $120K (24:30)</li>
+        <li>Apr 17 — Acme Kickoff: Project budget confirmed $28K (08:15)</li>
+        <li>Apr 14 — Sales call: Pricing objection raised — $45K too high? (31:02)</li>
+        <li>Apr 10 — Finance review: Q2 budget variance discussed (14:50)</li>
+      </ul>
+      <p style="margin-top:12px;font-size:12.5px;color:var(--text-2);">Click any result to jump to that moment in the transcript →</p>
+    `
+  },
+  default: {
+    title: 'Sembly Response',
+    pillar: 'Meeting Intelligence', pillarClass: 'intel',
+    html: `
+      <p>I found relevant context across your recent meetings.</p>
+      <ul class="demo-item-list">
+        <li>4 meetings matched your query in the last 14 days</li>
+        <li>Key themes: project scope, timeline, budget concerns</li>
+        <li>1 open delivery risk flagged: timeline conflict in 2 calls</li>
+      </ul>
+      <p style="margin-top:12px;font-size:12.5px;color:var(--text-2);">Connect your calendar to unlock your full meeting history →</p>
+    `
+  }
+};
+
+/* ── Active tab state ── */
+let currentTab = 'all';
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.prompt-tab').forEach(t => t.classList.remove('active'));
+  const el = document.querySelector(`[data-tab="${tab}"]`);
+  if (el) el.classList.add('active');
+
+  const data = TABS[tab] || TABS['all'];
+  document.getElementById('promptInput').placeholder = data.placeholder;
+
+  // Chips
+  const chipsEl = document.getElementById('promptChips');
+  chipsEl.innerHTML = data.chips.map(c =>
+    `<span class="chip ${c.cls}" onclick="fillPrompt('${c.prompt.replace(/'/g,"\\'")}')">
+      ${c.label}
+    </span>`
+  ).join('');
+
+  // Suggestions
+  const sugEl = document.getElementById('promptSuggestions');
+  sugEl.innerHTML = data.suggestions.map(s =>
+    `<span class="suggestion" onclick="fillPrompt('${s.prompt.replace(/'/g,"\\'")}')">
+      ${s.label}
+    </span>`
+  ).join('');
+
+  // Hide output when switching tabs
+  document.getElementById('demoOutput').classList.remove('visible');
+}
+
+function fillPrompt(text) {
+  document.getElementById('promptInput').value = text;
+  document.getElementById('promptInput').focus();
+}
+
+function handlePrompt() {
+  const input = document.getElementById('promptInput').value.toLowerCase().trim();
+  if (!input) return;
+
+  const output   = document.getElementById('demoOutput');
+  const titleEl  = document.getElementById('demoTitle');
+  const contentEl = document.getElementById('demoContent');
+  const tagEl    = document.getElementById('demoPillarTag');
+
+  let r = RESPONSES.default;
+  if (input.includes('proposal') || input.includes('draft proposal'))        r = RESPONSES.proposal;
+  else if (input.includes('sentiment') || input.includes('buyer'))           r = RESPONSES.sentiment;
+  else if (input.includes('pipeline') || input.includes('risk') && currentTab === 'sales') r = RESPONSES.pipeline;
+  else if (input.includes('brief') || input.includes('kickoff'))             r = RESPONSES.brief;
+  else if (input.includes('action item') || input.includes('action items') || input.includes('open action')) r = RESPONSES.actions;
+  else if (input.includes('decision') || input.includes('decisions'))        r = RESPONSES.decisions;
+  else if (input.includes('search') || input.includes('find') || input.includes('budget')) r = RESPONSES.search;
+  else if (input.includes('risk') || input.includes('risks'))                r = (currentTab === 'delivery') ? RESPONSES.actions : RESPONSES.pipeline;
+
+  titleEl.textContent  = r.title;
+  contentEl.innerHTML  = r.html;
+  tagEl.textContent    = r.pillar;
+  tagEl.className      = `demo-pillar-tag ${r.pillarClass}`;
+
+  // Border color matches pillar
+  const colors = { sales: 'var(--sales)', delivery: 'var(--delivery)', intel: 'var(--intel)' };
+  output.style.borderColor = colors[r.pillarClass] || 'var(--accent)';
+
+  output.classList.add('visible');
+  output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+document.getElementById('promptInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handlePrompt();
+});
+
+/* ── Init ── */
+switchTab('all');
+</script>
+
+</body>
+</html>

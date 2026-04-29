@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sembly – Turn Conversations into Deliverables</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #f9f8ff;
+      --surface:     #ffffff;
+      --border:      #e8e5f4;
+      --accent:      #6c47ff;
+      --accent-dark: #4f2fe0;
+      --accent-soft: #ede9ff;
+      --text-1:      #16103a;
+      --text-2:      #5b5580;
+      --text-3:      #9a94ba;
+      --green:       #12b981;
+      --radius:      14px;
+      --radius-sm:   8px;
+      --shadow-sm:   0 1px 3px rgba(108,71,255,.08), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md:   0 4px 24px rgba(108,71,255,.12), 0 2px 8px rgba(0,0,0,.06);
+      --shadow-lg:   0 12px 48px rgba(108,71,255,.18), 0 4px 16px rgba(0,0,0,.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(249,248,255,.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+    }
+
+    .nav-inner {
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .nav-logo-mark {
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-logo-text {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-1);
+      letter-spacing: -0.4px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin-left: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-1);
+      background: var(--accent-soft);
+    }
+
+    .nav-links .has-dropdown {
+      position: relative;
+    }
+
+    .nav-links .chevron {
+      font-size: 10px;
+      opacity: .6;
+      transition: transform .2s;
+    }
+
+    .nav-links .has-dropdown:hover .chevron {
+      transform: rotate(180deg);
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px;
+      min-width: 220px;
+      box-shadow: var(--shadow-lg);
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .has-dropdown:hover .dropdown {
+      display: flex;
+    }
+
+    .dropdown a {
+      padding: 8px 12px;
+      font-size: 13.5px;
+      color: var(--text-2);
+      border-radius: var(--radius-sm);
+    }
+
+    .dropdown a:hover {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .dropdown-label {
+      padding: 8px 12px 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .nav-spacer { flex: 1; }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-ghost {
+      padding: 7px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .btn-ghost:hover {
+      color: var(--text-1);
+      background: var(--accent-soft);
+    }
+
+    .btn-primary {
+      padding: 7px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(108,71,255,.3);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 900px; height: 700px;
+      background: radial-gradient(ellipse at center, rgba(108,71,255,.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 5px 14px 5px 10px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-2);
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .7; transform: scale(1.3); }
+    }
+
+    .hero-headline {
+      font-size: clamp(36px, 5.5vw, 68px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.07;
+      max-width: 780px;
+      margin-bottom: 20px;
+      color: var(--text-1);
+    }
+
+    .hero-headline em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent) 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--text-2);
+      max-width: 520px;
+      margin-bottom: 40px;
+      line-height: 1.65;
+    }
+
+    /* ── PROMPT BOX ── */
+    .prompt-container {
+      width: 100%;
+      max-width: 680px;
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .prompt-box {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow-md);
+      padding: 16px 20px;
+      transition: border-color .2s, box-shadow .2s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .prompt-box:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(108,71,255,.1), var(--shadow-md);
+    }
+
+    .prompt-input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 16px;
+      color: var(--text-1);
+      resize: none;
+      min-height: 48px;
+      font-family: inherit;
+      line-height: 1.5;
+    }
+
+    .prompt-input::placeholder { color: var(--text-3); }
+
+    .prompt-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .prompt-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(108,71,255,.15);
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .chip:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .prompt-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .prompt-attach {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px; height: 34px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      color: var(--text-3);
+      font-size: 16px;
+      transition: all .15s;
+    }
+
+    .prompt-attach:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+
+    .prompt-submit {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      transition: all .15s;
+    }
+
+    .prompt-submit:hover {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(108,71,255,.35);
+    }
+
+    .prompt-submit svg { width: 14px; height: 14px; }
+
+    .prompt-suggestions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 680px;
+    }
+
+    .suggestion {
+      padding: 7px 14px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-2);
+      cursor: pointer;
+      transition: all .15s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .suggestion:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+      transform: translateY(-1px);
+    }
+
+    .hero-cta-note {
+      margin-top: 16px;
+      font-size: 12.5px;
+      color: var(--text-3);
+    }
+
+    /* ── LOGOS BAR ── */
+    .logos-bar {
+      padding: 48px 24px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .logos-bar p {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 24px;
+    }
+
+    .logos-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .logo-pill {
+      padding: 8px 20px;
+      border-radius: 100px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-3);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ── FEATURES GRID ── */
+    .section {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 12px;
+    }
+
+    .section-heading {
+      font-size: clamp(26px, 3.5vw, 42px);
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      line-height: 1.1;
+      max-width: 600px;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 16px;
+      color: var(--text-2);
+      max-width: 520px;
+      margin-bottom: 52px;
+      line-height: 1.65;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .features-grid { grid-template-columns: 1fr; }
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: all .2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), #a78bfa);
+      opacity: 0;
+      transition: opacity .2s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(108,71,255,.3);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+
+    .feature-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-1);
+      margin-bottom: 8px;
+      letter-spacing: -.3px;
+    }
+
+    .feature-desc {
+      font-size: 13.5px;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    /* ── BIG FEATURE HIGHLIGHT ── */
+    .highlight-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      padding: 80px 24px;
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 800px) {
+      .highlight-row { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    .highlight-visual {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      aspect-ratio: 4/3;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .visual-topbar {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ff6b6b; }
+    .dot-y { background: #ffd43b; }
+    .dot-g { background: #69db7c; }
+
+    .visual-body {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mock-bubble {
+      background: var(--accent-soft);
+      border-radius: 12px 12px 12px 4px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--text-1);
+      max-width: 80%;
+      line-height: 1.5;
+      border: 1px solid rgba(108,71,255,.12);
+    }
+
+    .mock-bubble.right {
+      border-radius: 12px 12px 4px 12px;
+      background: var(--accent);
+      color: #fff;
+      align-self: flex-end;
+      border: none;
+    }
+
+    .mock-doc {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: var(--text-2);
+      margin-top: 4px;
+    }
+
+    .mock-doc-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-1);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mock-doc-line {
+      height: 6px;
+      border-radius: 4px;
+      background: var(--border);
+      margin-bottom: 5px;
+    }
+
+    /* ── STATS ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    @media (max-width: 600px) { .stats-row { grid-template-columns: 1fr; } }
+
+    .stat-card {
+      text-align: center;
+      padding: 32px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .stat-num {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      background: linear-gradient(135deg, var(--accent) 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-2);
+      font-weight: 500;
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) { .testimonials-grid { grid-template-columns: 1fr; } }
+
+    .testimonial-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .testimonial-stars {
+      color: #f59e0b;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .testimonial-text {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .author-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .author-name { font-size: 13px; font-weight: 700; color: var(--text-1); }
+    .author-role { font-size: 12px; color: var(--text-3); }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      margin: 0 24px 80px;
+      background: linear-gradient(135deg, var(--accent) 0%, #7c3aed 100%);
+      border-radius: 24px;
+      padding: 72px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(255,255,255,.15) 0%, transparent 70%);
+    }
+
+    .cta-section::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -60px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(255,255,255,.1) 0%, transparent 70%);
+    }
+
+    .cta-section h2 {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section p {
+      font-size: 17px;
+      color: rgba(255,255,255,.75);
+      margin-bottom: 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-white {
+      padding: 12px 28px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .15s;
+    }
+
+    .btn-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+
+    .btn-outline-white {
+      padding: 12px 28px;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      background: rgba(255,255,255,.15);
+      border: 1.5px solid rgba(255,255,255,.4);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .15s;
+    }
+
+    .btn-outline-white:hover {
+      background: rgba(255,255,255,.25);
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 24px 32px;
+    }
+
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    @media (max-width: 800px) {
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+
+    .footer-brand p {
+      font-size: 13.5px;
+      color: var(--text-3);
+      line-height: 1.65;
+      margin-top: 12px;
+      max-width: 260px;
+    }
+
+    .footer-col h4 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-1);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 16px;
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 13.5px;
+      color: var(--text-3);
+      text-decoration: none;
+      margin-bottom: 10px;
+      transition: color .15s;
+    }
+
+    .footer-col a:hover { color: var(--accent); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-bottom p {
+      font-size: 12.5px;
+      color: var(--text-3);
+    }
+
+    .footer-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge-pill {
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(108,71,255,.15);
+    }
+
+    /* ── DEMO OUTPUT PANEL ── */
+    .demo-output {
+      display: none;
+      width: 100%;
+      max-width: 680px;
+      background: var(--surface);
+      border: 1.5px solid var(--accent);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 20px;
+      margin-top: 12px;
+      text-align: left;
+      animation: fadeUp .3s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .demo-output.visible { display: block; }
+
+    .demo-output-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .demo-output-content p {
+      font-size: 13.5px;
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .demo-output-content strong { color: var(--text-1); }
+
+    .demo-item-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .demo-item-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13.5px;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
+
+    .demo-item-list li::before {
+      content: '✓';
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(18,185,129,.15);
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    /* ── INTEGRATION ROW ── */
+    .integrations-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .integration-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-2);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .integration-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════
+       NAVIGATION
+  ════════════════════════════════════════ -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-mark">S</div>
+        <span class="nav-logo-text">Sembly</span>
+      </a>
+
+      <ul class="nav-links">
+        <li class="has-dropdown">
+          <a href="#">Product <span class="chevron">▼</span></a>
+          <div class="dropdown">
+            <span class="dropdown-label">Intelligence</span>
+            <a href="#">Meeting Intelligence</a>
+            <a href="#">AI Transcription</a>
+            <a href="#">AI Meeting Summary</a>
+            <span class="dropdown-label">Outputs</span>
+            <a href="#">Client Deliverables</a>
+            <a href="#">Action Items</a>
+            <a href="#">Conversation Search</a>
+          </div>
+        </li>
+        <li class="has-dropdown">
+          <a href="#">Solutions <span class="chevron">▼</span></a>
+          <div class="dropdown">
+            <span class="dropdown-label">By Team</span>
+            <a href="#">Sales</a>
+            <a href="#">Customer Success</a>
+            <a href="#">Product & Design</a>
+            <a href="#">HR & Recruitment</a>
+            <span class="dropdown-label">By Size</span>
+            <a href="#">Enterprise</a>
+            <a href="#">SMBs</a>
+            <a href="#">Freelancers</a>
+          </div>
+        </li>
+        <li><a href="#">Integrations</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li class="has-dropdown">
+          <a href="#">Resources <span class="chevron">▼</span></a>
+          <div class="dropdown">
+            <a href="#">Help Center</a>
+            <a href="#">Blog</a>
+            <a href="#">Webinars</a>
+            <a href="#">Trust Center</a>
+          </div>
+        </li>
+      </ul>
+
+      <div class="nav-spacer"></div>
+
+      <div class="nav-actions">
+        <a href="#" class="btn-ghost">Log in</a>
+        <a href="#" class="btn-primary">Try Free</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ════════════════════════════════════════
+       HERO
+  ════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Now with Agentic AI · 10,000+ teams trust Sembly
+    </div>
+
+    <h1 class="hero-headline">
+      Turn any meeting into<br><em>client-ready deliverables</em>
+    </h1>
+
+    <p class="hero-sub">
+      Sembly captures, summarizes, and transforms your conversations into proposals, reports, and action items — automatically.
+    </p>
+
+    <!-- Interactive prompt box -->
+    <div class="prompt-container">
+      <div class="prompt-box" id="promptBox">
+        <textarea
+          class="prompt-input"
+          id="promptInput"
+          rows="2"
+          placeholder="Ask Sembly about your meetings, or paste a transcript to get started…"
+        ></textarea>
+        <div class="prompt-footer">
+          <div class="prompt-chips">
+            <span class="chip" onclick="fillPrompt('Summarize my last sales call')">📋 Summarize call</span>
+            <span class="chip" onclick="fillPrompt('Create a project brief from today\'s kickoff meeting')">📄 Project brief</span>
+            <span class="chip" onclick="fillPrompt('List all action items and owners from last week\'s calls')">✅ Action items</span>
+            <span class="chip" onclick="fillPrompt('Draft a follow-up email based on my meeting')">✉️ Follow-up email</span>
+          </div>
+          <div class="prompt-actions">
+            <button class="prompt-attach" title="Upload transcript or audio">📎</button>
+            <button class="prompt-submit" onclick="handlePrompt()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+              Ask Sembly
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demo output panel -->
+      <div class="demo-output" id="demoOutput">
+        <div class="demo-output-header">
+          ✦ Sembly · <span id="demoTitle">Processing your request…</span>
+        </div>
+        <div class="demo-output-content" id="demoContent"></div>
+      </div>
+    </div>
+
+    <!-- Suggestions -->
+    <div class="prompt-suggestions">
+      <span class="suggestion" onclick="fillPrompt('What risks were raised in my last client meeting?')">🚨 Identify meeting risks</span>
+      <span class="suggestion" onclick="fillPrompt('Generate a sales proposal from my discovery call')">📑 Sales proposal</span>
+      <span class="suggestion" onclick="fillPrompt('Show sentiment trends across my last 10 calls')">📈 Sentiment analysis</span>
+      <span class="suggestion" onclick="fillPrompt('Extract key decisions from the Q2 planning session')">🧠 Key decisions</span>
+    </div>
+
+    <p class="hero-cta-note">No credit card required · Works with Zoom, Teams, Google Meet & Webex</p>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       LOGOS / INTEGRATIONS
+  ════════════════════════════════════════ -->
+  <div class="logos-bar">
+    <p>Works seamlessly with your existing stack</p>
+    <div class="logos-row">
+      <span class="logo-pill">Salesforce</span>
+      <span class="logo-pill">HubSpot</span>
+      <span class="logo-pill">Notion</span>
+      <span class="logo-pill">Slack</span>
+      <span class="logo-pill">Zoom</span>
+      <span class="logo-pill">Teams</span>
+      <span class="logo-pill">Google Meet</span>
+      <span class="logo-pill">Webex</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ════════════════════════════════════════
+       STATS
+  ════════════════════════════════════════ -->
+  <section class="section">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">2M+</div>
+        <div class="stat-label">Business interactions captured</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">10K+</div>
+        <div class="stat-label">Professional teams worldwide</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">48</div>
+        <div class="stat-label">Languages supported</div>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+      <span class="hero-badge" style="margin:0;">🏆 Gartner Emerging Visionary</span>
+      <span class="hero-badge" style="margin:0;">🔒 SOC 2 Type II Certified</span>
+      <span class="hero-badge" style="margin:0;">✅ Microsoft 365 Certified</span>
+      <span class="hero-badge" style="margin:0;">🇪🇺 GDPR Compliant</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ════════════════════════════════════════
+       FEATURES
+  ════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-label">✦ Capabilities</div>
+    <h2 class="section-heading">Everything you need from every meeting</h2>
+    <p class="section-sub">
+      Sembly goes beyond note-taking — it's an agentic intelligence layer that turns conversations into organizational memory and deliverables.
+    </p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <div class="feature-name">Client Deliverables</div>
+        <div class="feature-desc">Auto-generate proposals, project briefs, pitch decks, and client reports directly from your meeting conversations.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <div class="feature-name">Meeting Intelligence</div>
+        <div class="feature-desc">Surface key decisions, commitments, risks, and patterns across all your calls — in real time and retrospectively.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✅</div>
+        <div class="feature-name">Action Item Tracking</div>
+        <div class="feature-desc">Automatically extract action items with owners, deadlines, and dependencies — synced to your project tools.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-name">Conversation Analytics</div>
+        <div class="feature-desc">Analyze sentiment, engagement, talk-time, and topic trends across your team's calls and client interactions.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <div class="feature-name">Conversation Search</div>
+        <div class="feature-desc">Search by keyword, speaker, topic, or date across your entire meeting history — find any moment instantly.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <div class="feature-name">50+ Integrations</div>
+        <div class="feature-desc">Sync insights and outputs to Salesforce, HubSpot, Notion, Slack, and 50+ tools — no manual copy-paste.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ════════════════════════════════════════
+       HIGHLIGHT ROW — Client Deliverables
+  ════════════════════════════════════════ -->
+  <div class="highlight-row">
+    <div>
+      <div class="section-label">✦ Client Deliverables</div>
+      <h2 class="section-heading">From conversation to polished document in seconds</h2>
+      <p class="section-sub">
+        Ask Sembly to create a proposal, gap analysis, or board summary — and it builds a complete, formatted document from your meeting context.
+      </p>
+      <div class="integrations-row">
+        <span class="integration-badge"><span class="integration-dot"></span>Sales Proposals</span>
+        <span class="integration-badge"><span class="integration-dot"></span>Project Briefs</span>
+        <span class="integration-badge"><span class="integration-dot"></span>Investment Memos</span>
+        <span class="integration-badge"><span class="integration-dot"></span>Board Summaries</span>
+        <span class="integration-badge"><span class="integration-dot"></span>Gap Analyses</span>
+      </div>
+    </div>
+    <div class="highlight-visual">
+      <div class="visual-topbar">
+        <span class="dot dot-r"></span>
+        <span class="dot dot-y"></span>
+        <span class="dot dot-g"></span>
+        <span style="margin-left:8px;font-size:12px;color:var(--text-3);">Sembly · Client Deliverable</span>
+      </div>
+      <div class="visual-body">
+        <div class="mock-bubble">Can you create a sales proposal based on today's discovery call with Acme Corp?</div>
+        <div class="mock-bubble right">Generating proposal from your 47-min call with Acme Corp…</div>
+        <div class="mock-doc">
+          <div class="mock-doc-title">📄 Acme Corp — Solution Proposal</div>
+          <div class="mock-doc-line" style="width:90%"></div>
+          <div class="mock-doc-line" style="width:75%"></div>
+          <div class="mock-doc-line" style="width:85%"></div>
+          <div class="mock-doc-line" style="width:60%"></div>
+          <div style="margin-top:8px;font-size:11px;color:var(--green);font-weight:600;">✓ Ready to export — PDF, DOCX, or share link</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ════════════════════════════════════════
+       TESTIMONIALS
+  ════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-label">✦ Customers</div>
+    <h2 class="section-heading">Loved by professional teams</h2>
+    <p class="section-sub" style="margin-bottom:40px;">
+      From boutique agencies to enterprise teams, Sembly saves hours every week and keeps nothing lost from a meeting.
+    </p>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">
+          "Sembly replaced three different tools we were using. Now I walk out of every client call with a draft proposal already waiting in my inbox."
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:#6c47ff;">MR</div>
+          <div>
+            <div class="author-name">Marcus R.</div>
+            <div class="author-role">Sales Director, TechCo</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">
+          "The action item tracking alone saves my team 4–5 hours a week. Nothing falls through the cracks anymore — it's become essential for our PMO."
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:#7c3aed;">SL</div>
+          <div>
+            <div class="author-name">Sara L.</div>
+            <div class="author-role">Project Lead, Agency XYZ</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">
+          "We run a VC fund and Sembly automatically generates investment memos from partner calls. It cut our documentation time by 70%."
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:#0ea5e9;">DK</div>
+          <div>
+            <div class="author-name">David K.</div>
+            <div class="author-role">General Partner, Venture Capital</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       CTA SECTION
+  ════════════════════════════════════════ -->
+  <div style="max-width:1120px;margin:0 auto;padding:0 24px 80px;">
+    <div class="cta-section">
+      <h2>Start turning your meetings into results</h2>
+      <p>Join 10,000+ teams who let Sembly handle the documentation so they can focus on what matters.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn-white">Try Sembly Free</a>
+        <a href="#" class="btn-outline-white">Book a Demo</a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo" style="display:inline-flex;">
+            <div class="nav-logo-mark">S</div>
+            <span class="nav-logo-text">Sembly</span>
+          </a>
+          <p>The agentic meeting intelligence platform for professional services and high-impact teams.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#">Meeting Intelligence</a>
+          <a href="#">Client Deliverables</a>
+          <a href="#">Action Items</a>
+          <a href="#">Analytics</a>
+          <a href="#">Integrations</a>
+          <a href="#">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Solutions</h4>
+          <a href="#">Sales Teams</a>
+          <a href="#">Customer Success</a>
+          <a href="#">Venture Capital</a>
+          <a href="#">Agencies</a>
+          <a href="#">Enterprise</a>
+          <a href="#">Freelancers</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About Us</a>
+          <a href="#">Blog</a>
+          <a href="#">Webinars</a>
+          <a href="#">Partners</a>
+          <a href="#">Help Center</a>
+          <a href="#">Trust Center</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 Sembly AI. All rights reserved.</p>
+        <div class="footer-badges">
+          <span class="badge-pill">SOC 2 Type II</span>
+          <span class="badge-pill">GDPR</span>
+          <span class="badge-pill">MS 365 Certified</span>
+        </div>
+        <div style="display:flex;gap:16px;">
+          <a href="#" style="font-size:12.5px;color:var(--text-3);text-decoration:none;">Privacy</a>
+          <a href="#" style="font-size:12.5px;color:var(--text-3);text-decoration:none;">Terms</a>
+          <a href="#" style="font-size:12.5px;color:var(--text-3);text-decoration:none;">Security</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ════════════════════════════════════════
+       INTERACTION JS
+  ════════════════════════════════════════ -->
+  <script>
+    function fillPrompt(text) {
+      const input = document.getElementById('promptInput');
+      input.value = text;
+      input.focus();
+    }
+
+    const responses = {
+      'summarize': {
+        title: 'Meeting Summary · Sales Call',
+        html: `
+          <p><strong>Duration:</strong> 32 min · <strong>Attendees:</strong> You, Sarah (AcmeCorp), Tom (AcmeCorp)</p>
+          <p><strong>Key Outcomes:</strong> Acme Corp is evaluating 3 vendors; budget is confirmed at $45K/yr; decision by end of Q2.</p>
+          <ul class="demo-item-list">
+            <li>Pain point: current tool lacks real-time sentiment tracking</li>
+            <li>They need CRM integration with Salesforce (existing stack)</li>
+            <li>Next step: send proposal by Thursday, schedule technical demo</li>
+            <li>Champion identified: Sarah (VP Sales) — positive sentiment throughout</li>
+          </ul>
+        `
+      },
+      'project brief': {
+        title: 'Generated · Project Brief',
+        html: `
+          <p><strong>Project:</strong> Website Redesign — Acme Corp<br><strong>Timeline:</strong> 8 weeks · <strong>Budget:</strong> $28,000</p>
+          <ul class="demo-item-list">
+            <li>Scope: Redesign 12 core pages, new design system, mobile-first</li>
+            <li>Stakeholders: Marketing (lead), Dev Team, Legal (approval)</li>
+            <li>Success metrics: 30% improvement in conversion, sub-2s load time</li>
+            <li>First milestone: Wireframes sign-off by Week 2</li>
+          </ul>
+          <p style="margin-top:12px;font-size:12px;color:var(--green);font-weight:600;">✓ Full brief exported to Notion · Action items synced to Asana</p>
+        `
+      },
+      'action items': {
+        title: 'Action Items · Last 7 Days',
+        html: `
+          <ul class="demo-item-list">
+            <li><strong>You</strong> — Send revised proposal to Acme Corp <em style="color:var(--text-3)">(Due: Thu)</em></li>
+            <li><strong>Tom</strong> — Schedule technical demo with Acme engineering team <em style="color:var(--text-3)">(Due: Fri)</em></li>
+            <li><strong>Sarah</strong> — Share legal NDA template with new client <em style="color:var(--text-3)">(Due: Wed)</em></li>
+            <li><strong>You</strong> — Upload onboarding deck to client portal <em style="color:var(--text-3)">(Due: Mon)</em></li>
+          </ul>
+          <p style="margin-top:12px;font-size:12px;color:var(--green);font-weight:600;">✓ Synced to Asana · 2 items overdue flagged</p>
+        `
+      },
+      'default': {
+        title: 'Sembly AI Response',
+        html: `
+          <p>I've analyzed your request and found relevant context from your recent meetings.</p>
+          <ul class="demo-item-list">
+            <li>3 meetings matched your query from the last 14 days</li>
+            <li>Key themes: project scope, timeline concerns, budget approval</li>
+            <li>1 open risk flagged: delivery timeline conflict identified in 2 calls</li>
+          </ul>
+          <p style="margin-top:12px;font-size:12.5px;color:var(--text-2);">Connect your calendar to unlock full meeting history analysis.</p>
+        `
+      }
+    };
+
+    function handlePrompt() {
+      const input = document.getElementById('promptInput').value.toLowerCase();
+      const output = document.getElementById('demoOutput');
+      const title = document.getElementById('demoTitle');
+      const content = document.getElementById('demoContent');
+
+      let response = responses['default'];
+      if (input.includes('summarize') || input.includes('summary')) response = responses['summarize'];
+      else if (input.includes('project brief') || input.includes('brief')) response = responses['project brief'];
+      else if (input.includes('action item') || input.includes('action items')) response = responses['action items'];
+
+      title.textContent = response.title;
+      content.innerHTML = response.html;
+      output.classList.add('visible');
+      output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    document.getElementById('promptInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+        handlePrompt();
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sembly Website Mockups</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      background: #f7f7f8; color: #111; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 40px 24px;
+    }
+    .logo { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .logo span { color: #6c47ff; }
+    .sub { font-size: 14px; color: #888; margin-bottom: 40px; }
+    .cards { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .card {
+      background: #fff; border: 1px solid #e5e5e7; border-radius: 12px;
+      padding: 28px 32px; width: 220px; text-align: center;
+      text-decoration: none; color: inherit;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .card:hover { border-color: #6c47ff; box-shadow: 0 4px 20px rgba(108,71,255,.12); }
+    .card-icon { font-size: 28px; margin-bottom: 12px; }
+    .card-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .card-desc { font-size: 12.5px; color: #888; line-height: 1.5; }
+    .badge {
+      display: inline-block; margin-top: 10px;
+      font-size: 10.5px; font-weight: 700; color: #6c47ff;
+      background: #f0ecff; border-radius: 100px; padding: 3px 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">Sembly<span>.ai</span></div>
+  <p class="sub">Website Mockups</p>
+  <div class="cards">
+    <a href="sembly-mockup_v1.html" class="card">
+      <div class="card-icon">📄</div>
+      <div class="card-title">Mockup v1</div>
+      <p class="card-desc">Initial concept with hero and feature sections.</p>
+    </a>
+    <a href="sembly-mockup_v2.html" class="card">
+      <div class="card-icon">🎨</div>
+      <div class="card-title">Mockup v2</div>
+      <p class="card-desc">Refined layout with three-pillar structure.</p>
+    </a>
+    <a href="sembly-mockup_v3.html" class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Mockup v3</div>
+      <p class="card-desc">Full homepage with agentic AI and interactive input.</p>
+      <span class="badge">Latest</span>
+    </a>
+  </div>
+</body>
+</html>
